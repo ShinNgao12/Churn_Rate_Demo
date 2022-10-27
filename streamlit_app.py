@@ -120,7 +120,7 @@ X = pd.concat((df_X_scale, df_X_dummies), axis = 1)
 input_scale = X.iloc[df.shape[0]:,:]
 
 # show input data
-st.subheader(f'Day previous interval {day_pre_interval}')
+st.subheader(f'Day previous interval: {day_pre_interval}')
 
 st.subheader('User Input features')
 
@@ -137,8 +137,23 @@ logreg = pickle.load(open('churn_rate_logreg.pkl', 'rb'))
 prediction_proba = logreg.predict_proba(input_scale)
 result  = pd.DataFrame(logreg.predict(input_scale), columns = ['Label'])
 result.replace((1,0), ('Churn', 'Not churn'), inplace = True)
-result['probability'] = np.max(prediction_proba, axis = 1)
+result['probability'] = np.max(prediction_proba, axis = 1) * 100
 
 st.subheader('Prediction')
 st.write(result)
 
+# add download button
+@st.experimental_memo
+def convert_df(df):
+   return df.to_csv(index=False).encode('utf-8')
+
+
+df = pd.concat((input_df,result), axis = 1)
+csv = convert_df(df)
+st.download_button(
+    "Press to Download",
+    csv,
+    file_name = f"Prediction {datetime.strftime(datetime.now(), '%Y-%m-%d')}.csv",
+    mime = "text/csv",
+    key ='download-csv'
+)
