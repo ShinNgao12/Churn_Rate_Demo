@@ -74,13 +74,6 @@ else:
 # read raw data to transform
 df = pd.read_csv('data_gcp_0712.csv')
 
-# drop missing value 
-df.dropna(
-    subset = ['job','gender','province_1'],
-    how = 'any',
-    inplace =  True
-)
-
 # concat data
 df_gcp = pd.concat((df, input_df), axis = 0)
 

@@ -40,12 +40,12 @@ df_gcp['last_trans_date'] = pd.to_datetime(df_gcp['last_trans_date'])
 df_gcp['purchase_val'] = df_gcp['purchase_val'].astype(float).apply(lambda x: int(x))
 df_gcp['avg_available_point'] = df_gcp['avg_available_point'].astype(float).apply(lambda x: int(x))
 
-# drop missing value
-df_gcp.dropna(
-    subset = ['job','gender','province_1'],
-    how = 'any',
-    inplace =  True
-)
+# drop missing value --> 
+# df_gcp.dropna(
+#     subset = ['job','gender','province_1'],
+#     how = 'any',
+#     inplace =  True
+# )
 
 # convert datetime to distance between 2 transactions 
 df_gcp['days_from_last_trans'] = (pd.to_datetime(day_pre_interval) - df_gcp["last_trans_date"]).dt.days.astype(int)
