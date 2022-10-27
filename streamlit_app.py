@@ -133,7 +133,7 @@ result.replace((1,0), ('Churn', 'Not churn'), inplace = True)
 result['probability'] = np.max(prediction_proba, axis = 1) * 100
 
 st.subheader('Prediction')
-st.write(result)
+st.write(result.T)
 
 # add download button
 @st.experimental_memo
