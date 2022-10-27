@@ -1,0 +1,11 @@
+streamlit
+pandas
+numpy
+sklearn
+scikit-learn
+seaborn
+matplotlib
+google-cloud
+google-cloud-bigquery
+pickle
+imblearn
