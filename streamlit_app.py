@@ -120,8 +120,7 @@ X = pd.concat((df_X_scale, df_X_dummies), axis = 1)
 input_scale = X.iloc[df.shape[0]:,:]
 
 # show input data
-st.subheader('Day previous interval')
-st.write(day_pre_interval)
+st.subheader(f'Day previous interval {day_pre_interval}')
 
 st.subheader('User Input features')
 
