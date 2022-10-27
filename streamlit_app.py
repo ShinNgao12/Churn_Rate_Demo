@@ -126,7 +126,7 @@ else:
 logreg = pickle.load(open('churn_rate_logreg.pkl', 'rb'))
 
 prediction_proba = logreg.predict_proba(input_scale)
-result  = pd.DataFrame(logreg.predict(input_scale), columns = 'Label')
+result  = pd.DataFrame(logreg.predict(input_scale), columns = ['Label'])
 result.replace((1,0), ('Churn', 'Not churn'), inplace = True)
 result['probability'] = np.max(prediction_proba, axis = 1)
 
