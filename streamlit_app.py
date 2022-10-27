@@ -11,17 +11,17 @@ st.write("""
 """)
 
 st.sidebar.header('User Input Features')
-uploaded_file = st.file_uploader("Upload your input CSV file", type=["csv"])
+uploaded_file = st.sidebar.file_uploader("Upload your input CSV file", type=["csv"])
 
 if uploaded_file is not None:
     input_df = pd.read_csv(uploaded_file)
 else:
     def user_input_features():
-        purchase_val = st.number_input('Purchase value')
-        first_trans_date = st.date_input('First transaction date', date(2022, 1, 1))
-        last_trans_date = st.date_input('Last transaction date', date(2022, 1, 1))
-        count_trans = st.number_input('Count transaction')
-        job =  st.selectbox('Job',
+        purchase_val = st.sidebar.number_input('Purchase value')
+        first_trans_date = st.sidebar.date_input('First transaction date', date(2022, 1, 1))
+        last_trans_date = st.sidebar.date_input('Last transaction date', date(2022, 1, 1))
+        count_trans = st.sidebar.number_input('Count transaction')
+        job =  st.sidebar.selectbox('Job',
                             ('Hưu trí','Kinh doanh Online/ Kinh doanh tự do/ Tự làm chủ',
                             'Lao động phổ thông ngoài trời', 'Nhân viên VP', 
                             'Ngành nghề chuyên môn (Bác sĩ, Dược sĩ, Kỹ sư, ...)',
@@ -29,8 +29,8 @@ else:
                             'Quản lý cấp trung (Trưởng phòng, Phó phòng/Trưởng nhóm..)',
                             'Quản lý cấp cao (Giám đốc, Phó GĐ)', 'Học sinh - sinh viên',
                             'Công nhân trong nhà máy', 'Nhân viên Sales','Khác', np.nan))
-        gender = st.selectbox('Gender: Female(1), Male(2), Unknow(3)', (1,2,3))
-        province = st.selectbox('Province',('Thành Phố Hà Nội', 'Thành Phố Hồ Chí Minh', 'Tỉnh Thanh Hóa',
+        gender = st.sidebar.selectbox('Gender: Female(1), Male(2), Unknow(3)', (1,2,3))
+        province = st.sidebar.selectbox('Province',('Thành Phố Hà Nội', 'Thành Phố Hồ Chí Minh', 'Tỉnh Thanh Hóa',
                                 'Tỉnh Đồng Tháp', 'Tỉnh Vĩnh Long', 'Tỉnh Bình Định',
                                 'Tỉnh Bình Dương', 'Tỉnh Tiền Giang', 'Tỉnh Bắc Ninh',
                                 'Tỉnh Nghệ An', 'Tỉnh Hà Nam', 'Tỉnh Yên Bái', 'Tỉnh Ninh Thuận',
@@ -50,7 +50,7 @@ else:
                                 'Tỉnh Sơn La', 'Tỉnh Ninh Bình', 'Tỉnh Bình Phước',
                                 'Tỉnh Quảng Trị', 'Tỉnh Điện Biên', 'Tỉnh Đắk Nông',
                                 'Tỉnh Bắc Kạn', 'Tỉnh Lạng Sơn', 'Tỉnh Lai Châu', 'Tỉnh Hòa Bình', np.nan))
-        avg_available_point = st.number_input('Average available points')
+        avg_available_point = st.sidebar.number_input('Average available points')
         
         data = {'purchase_val': purchase_val,
                 'first_trans_date': first_trans_date,
@@ -112,4 +112,24 @@ df_X_scale = pd.DataFrame(scaler.transform(df_X[numeric_col]), columns = numeric
 X = pd.concat((df_X_scale, df_X_dummies), axis = 1) 
 input_scale = X.iloc[df.shape[0]:,:]
 
+# show input data
+st.subheader('User Input features')
+
+if uploaded_file is not None:
+    st.write(input_df)
+    
+else:
+    st.write('Awaiting CSV file to be uploaded. Currently using example input parameters (shown below).')
+    st.write(input_df)
+
+
 logreg = pickle.load(open('churn_rate_logreg.pkl', 'rb'))
+
+prediction_proba = logreg.predict_proba(input_scale)
+result  = pd.DataFrame(logreg.predict(input_scale), columns = 'Label')
+result.replace((1,0), ('Churn', 'Not churn'), inplace = True)
+result['probability'] = np.max(prediction_proba, axis = 1)
+
+st.subheader('Prediction')
+st.write(result)
+
