@@ -13,6 +13,9 @@ st.write("""
 st.sidebar.header('User Input Features')
 uploaded_file = st.sidebar.file_uploader("Upload your input CSV file", type=["csv"])
 
+day_pre_interval = st.sidebar.date_input('Day previous interval', date(2022, 1, 1))
+day_pre_interval = '2022-04-07'
+
 if uploaded_file is not None:
     input_df = pd.read_csv(uploaded_file)
 else:
@@ -92,6 +95,7 @@ df_gcp['avg_available_point'] = df_gcp['avg_available_point'].astype(float).appl
 df_gcp['gender'].replace([1,2,3], ['Female', 'Male', 'Unknow'], inplace=True)
 
 day_pre_interval = '2022-04-07'
+
 # convert datetime to distance between 2 transactions 
 df_gcp['days_from_last_trans'] = (pd.to_datetime(day_pre_interval) - df_gcp["last_trans_date"]).dt.days.astype(int)
 df_gcp['days_from_first_trans'] = (pd.to_datetime(day_pre_interval) - df_gcp['first_trans_date']).dt.days.astype(int)
@@ -116,6 +120,9 @@ X = pd.concat((df_X_scale, df_X_dummies), axis = 1)
 input_scale = X.iloc[df.shape[0]:,:]
 
 # show input data
+st.sidebar.subheader('Day previous interval')
+st.write(day_pre_interval)
+
 st.subheader('User Input features')
 
 if uploaded_file is not None:
