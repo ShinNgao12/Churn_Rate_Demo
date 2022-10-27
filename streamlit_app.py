@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from datetime import date
+from datetime import date ,datetime
 import pickle
 
 from sklearn.preprocessing import StandardScaler
@@ -13,7 +13,7 @@ st.write("""
 st.sidebar.header('User Input Features')
 uploaded_file = st.sidebar.file_uploader("Upload your input CSV file", type=["csv"])
 
-day_pre_interval = st.sidebar.date_input('Day previous interval', date(2022, 1, 1))
+day_pre_interval = st.sidebar.date_input('Day previous interval', datetime.now())
 day_pre_interval = '2022-04-07'
 
 if uploaded_file is not None:
@@ -22,8 +22,8 @@ else:
     def user_input_features():
         purchase_val = st.sidebar.number_input('Purchase value', format='%d',
                                                min_value = 0, step = 1)
-        first_trans_date = st.sidebar.date_input('First transaction date', date(2022, 1, 1))
-        last_trans_date = st.sidebar.date_input('Last transaction date', date(2022, 1, 1))
+        first_trans_date = st.sidebar.date_input('First transaction date', datetime.now())
+        last_trans_date = st.sidebar.date_input('Last transaction date', datetime.now())
         count_trans = st.sidebar.number_input('Count transaction', format = '%d',
                                               min_value = 0, step = 1)
         job =  st.sidebar.selectbox('Job',
