@@ -125,28 +125,32 @@ else:
     st.write(input_df)
 
 
-logreg = pickle.load(open('churn_rate_logreg.pkl', 'rb'))
 
-prediction_proba = logreg.predict_proba(input_scale)
-result  = pd.DataFrame(logreg.predict(input_scale), columns = ['Label'])
-result.replace((1,0), ('Churn', 'Not churn'), inplace = True)
-result['probability'] = np.round(np.max(prediction_proba, axis = 1) * 100, 2)
+exec_button = st.sidebar.button('Predict')
 
-st.subheader('Prediction')
-st.write(result)
+if exec_button:
+    logreg = pickle.load(open('churn_rate_logreg.pkl', 'rb'))
 
-# add download button
-@st.experimental_memo
-def convert_df(df):
-   return df.to_csv(index=False).encode('utf-8')
+    prediction_proba = logreg.predict_proba(input_scale)
+    result  = pd.DataFrame(logreg.predict(input_scale), columns = ['Label'])
+    result.replace((1,0), ('Churn', 'Not churn'), inplace = True)
+    result['probability'] = np.round(np.max(prediction_proba, axis = 1) * 100, 2)
+
+    st.subheader('Prediction')
+    st.write(result)
+
+    # add download button
+    @st.experimental_memo
+    def convert_df(df):
+        return df.to_csv(index=False).encode('utf-8')
 
 
-df = pd.concat((input_df,result), axis = 1)
-csv = convert_df(df)
-st.download_button(
-    "Press to Download",
-    csv,
-    file_name = f"Prediction {datetime.strftime(datetime.now(), '%Y-%m-%d')}.csv",
-    mime = "text/csv",
-    key ='download-csv'
-)
+    df = pd.concat((input_df,result), axis = 1)
+    csv = convert_df(df)
+    st.download_button(
+        "Press to Download",
+        csv,
+        file_name = f"Prediction churn rate {datetime.strftime(datetime.now(), '%Y-%m-%d')}.csv",
+        mime = "text/csv",
+        key ='download-csv'
+    )
