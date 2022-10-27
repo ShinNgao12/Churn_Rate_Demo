@@ -17,10 +17,10 @@ if uploaded_file is not None:
     input_df = pd.read_csv(uploaded_file)
 else:
     def user_input_features():
-        purchase_val = st.sidebar.number_input('Purchase value')
+        purchase_val = st.sidebar.number_input('Purchase value', format='%d')
         first_trans_date = st.sidebar.date_input('First transaction date', date(2022, 1, 1))
         last_trans_date = st.sidebar.date_input('Last transaction date', date(2022, 1, 1))
-        count_trans = st.sidebar.number_input('Count transaction')
+        count_trans = st.sidebar.number_input('Count transaction', format = '%d')
         job =  st.sidebar.selectbox('Job',
                             ('Hưu trí','Kinh doanh Online/ Kinh doanh tự do/ Tự làm chủ',
                             'Lao động phổ thông ngoài trời', 'Nhân viên VP', 
@@ -50,7 +50,7 @@ else:
                                 'Tỉnh Sơn La', 'Tỉnh Ninh Bình', 'Tỉnh Bình Phước',
                                 'Tỉnh Quảng Trị', 'Tỉnh Điện Biên', 'Tỉnh Đắk Nông',
                                 'Tỉnh Bắc Kạn', 'Tỉnh Lạng Sơn', 'Tỉnh Lai Châu', 'Tỉnh Hòa Bình', np.nan))
-        avg_available_point = st.sidebar.number_input('Average available points')
+        avg_available_point = st.sidebar.number_input('Average available points', format='%d')
         
         data = {'purchase_val': purchase_val,
                 'first_trans_date': first_trans_date,
