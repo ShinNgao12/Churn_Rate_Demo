@@ -92,6 +92,12 @@ X = pd.concat((df_X_scale, df_X_dummies), axis = 1)
 smote = SMOTE(random_state=42)
 X, y = smote.fit_resample(X,y)
 
+# remove duplicate when oversampling
+test = pd.concat((X,y), axis = 1)
+test.drop_duplicates(inplace=True)
+X = test.drop(columns = 'churn')
+y = test['churn']
+
 ###################### BUILD MODEL #####################
 test_size = 0.2
 X_train, X_test, y_train, y_test = train_test_split(X, 

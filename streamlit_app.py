@@ -124,8 +124,6 @@ else:
     st.write('Awaiting CSV file to be uploaded. Currently using example input parameters (shown below).')
     st.write(input_df)
 
-
-
 exec_button = st.sidebar.button('Predict')
 
 if exec_button:
